@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyAllSupport - Variables del Server</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --ink: #1e293b;
+      --panel: #ffffff;
+      --border: #dbeafe;
+      --ok: #065f46;
+      --pill-bg: #d1fae5;
+      --muted: #475569;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(160deg, #e2e8f0 0%, #f8fafc 100%);
+      color: var(--ink);
+      padding: 24px;
+    }
+
+    .wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .topbar a {
+      color: #0f766e;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .status {
+      font-weight: 700;
+      color: var(--ok);
+      background: var(--pill-bg);
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+    }
+
+    dl {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    dt {
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 3px;
+    }
+
+    dd {
+      margin: 0;
+      font-family: Consolas, "Courier New", monospace;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 8px;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="topbar">
+      <a href="/">Volver al inicio</a>
+      <div class="status">Estado general: {{ data.status }}</div>
+    </header>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Docker</h2>
+        <dl>
+          <div>
+            <dt>En contenedor</dt>
+            <dd>{{ data.docker.running_in_container }}</dd>
+          </div>
+          <div>
+            <dt>Hostname contenedor</dt>
+            <dd>{{ data.docker.container_hostname }}</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="panel">
+        <h2>IRIS Server</h2>
+        <dl>
+          <div>
+            <dt>IRISSYS</dt>
+            <dd>{{ data.iris.irissys }}</dd>
+          </div>
+          <div>
+            <dt>Ejecutable iris</dt>
+            <dd>{{ data.iris.iris_executable }}</dd>
+          </div>
+          <div>
+            <dt>Proceso iris activo</dt>
+            <dd>{{ data.iris.iris_process_running }}</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="panel">
+        <h2>Proceso Flask</h2>
+        <dl>
+          <div>
+            <dt>PID</dt>
+            <dd>{{ data.process.pid }}</dd>
+          </div>
+          <div>
+            <dt>Uptime (s)</dt>
+            <dd>{{ data.process.uptime_seconds }}</dd>
+          </div>
+          <div>
+            <dt>Fecha local</dt>
+            <dd>{{ data.process.date_local }}</dd>
+          </div>
+          <div>
+            <dt>Hora local</dt>
+            <dd>{{ data.process.time_local }}</dd>
+          </div>
+          <div>
+            <dt>Fecha/hora UTC</dt>
+            <dd>{{ data.process.datetime_utc }}</dd>
+          </div>
+        </dl>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

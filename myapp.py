@@ -4,7 +4,7 @@ import subprocess
 import time
 from datetime import datetime, timezone
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 PROCESS_START_TS = time.time()
@@ -44,23 +44,11 @@ def _iris_process_running():
     return "irisdb" in process_list or "intersystems iris" in process_list
 
 
-@app.route("/")
-def index():
-    return jsonify(
-        {
-            "app": "myallsupport health service",
-            "endpoints": ["/", "/health"],
-            "message": "Usa /health para consultar estado de Docker, IRIS y fecha/hora.",
-        }
-    )
-
-
-@app.route("/health")
-def health():
+def _build_health_data():
     now_local = datetime.now().astimezone()
     now_utc = datetime.now(timezone.utc)
 
-    data = {
+    return {
         "status": "ok",
         "docker": {
             "running_in_container": _running_in_docker(),
@@ -79,7 +67,27 @@ def health():
             "datetime_utc": now_utc.isoformat(timespec="seconds"),
         },
     }
-    return jsonify(data)
+
+
+@app.route("/")
+def index():
+    return render_template(
+        "index.html",
+        endpoints=[
+            {"path": "/server", "description": "Pantalla con variables del servidor"},
+            {"path": "/health", "description": "API JSON de salud para monitoreo"},
+        ],
+    )
+
+
+@app.route("/health")
+def health():
+    return jsonify(_build_health_data())
+
+
+@app.route("/server")
+def server_variables():
+    return render_template("server.html", data=_build_health_data())
 
 
 if __name__ == "__main__":
