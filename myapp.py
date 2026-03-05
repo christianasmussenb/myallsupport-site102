@@ -4,7 +4,7 @@ import subprocess
 import time
 from datetime import datetime, timezone
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, url_for
 
 app = Flask(__name__)
 PROCESS_START_TS = time.time()
@@ -74,8 +74,14 @@ def index():
     return render_template(
         "index.html",
         endpoints=[
-            {"path": "/server", "description": "Pantalla con variables del servidor"},
-            {"path": "/health", "description": "API JSON de salud para monitoreo"},
+            {
+                "path": url_for("server_variables"),
+                "description": "Pantalla con variables del servidor",
+            },
+            {
+                "path": url_for("health"),
+                "description": "API JSON de salud para monitoreo",
+            },
         ],
     )
 
